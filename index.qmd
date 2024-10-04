@@ -1,0 +1,89 @@
+---
+title: "Gráficos del sistema base de R"
+author: "Paulina Balcázar"
+format:
+  html: 
+    toc: true
+date: 2024-10-03
+theme: 
+  - sandstone
+  - custom.scss
+lang: es
+fontcolor: darkblue
+fontsize: 1.1em
+---
+
+## Gráficos del sistema base de R 
+
+```{r}
+#| label: relacion-anchura-volumen-arboles 
+#| code-fold: true
+
+plot(
+  x=trees$Girth,
+  y=trees$Volume,
+  col= "darkgreen",
+  main = "Relación entre el volúmen y la anchura del tranco de los árboles",
+  sub = "Fuente: Meyer, H. A. (1953) Forest Mensuration. Penns Valley Publishers, Inc.",
+  xlab= "Ancho del árbol (in)",
+  ylab= "Volúmen del árbol (ft3)"
+)
+```
+
+Esta gráfica fue hecha con el data frame “trees” y me gustó mucho pues es un despliegue muy sencillo donde se puede observar que a mayor anchura o diámetro tenga un árbol es tremendamente posible que aumente su volumen. Da una gráfica en la que se podría trazar una línea recta de la relación directamente proporcional.
+
+
+## Función histograma
+```{r}
+data(iris)
+# Función hist(). Gráfico de la longitud de los pétalos de las flores de iris
+hist(
+  x = iris$Petal.Length, 
+  breaks = 30,
+  main = "Longitud de pétalos de las flores de iris", 
+  xlab = "Longitud del pétalo (cm)", 
+  ylab = "Frecuencia"
+)
+```
+
+## Penguins
+
+```{r}
+#cargar la librería
+#| label: cargar-tidyverse
+library(tidyverse)
+library(palmerpenguins)
+```
+
+#### Relación entre la masa del pingüino y sus picos
+```{r}
+#| label: grafico-dispersion-penguins
+# Gráfico de dispersión de longitud del pico vs masa (peso)
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "loess", se = FALSE) +
+  ggtitle("Longitud del pico vs. masa") +
+  xlab("Longitud del pico (mm)") +
+  ylab("Masa (g)") +
+  labs(color = "Especie", shape = "Especie")
+
+```
+
+
+#### Relación entre la masa del pingüino y sus picos por especie
+```{r}
+# Gráfico de dispersión de longitud del pico vs masa (peso) por especie
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species),
+             size = 2) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = species)) +
+  scale_color_manual(values = c("darkorange", "darkorchid", "cyan4")) +
+  ggtitle("Longitud del pico vs. masa por especie") +
+  xlab("Longitud del pico (mm)") +
+  ylab("Masa (g)") +
+  labs(color = "Especie", shape = "Especie")
+```
+
